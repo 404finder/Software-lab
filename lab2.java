@@ -1,65 +1,68 @@
 import java.util.*;
 import java.io.*;
-public class lab2 {
+public class swlab2 {
 	public static void main(String args[]) throws FileNotFoundException {
 		Scanner sc=new Scanner(System.in);
-		//Get the path to the file.
-		String path=sc.next();
-		//Get the required level.
-		int level=sc.nextInt();
-		//read file
-		FileReader file=new FileReader(path);
-		BufferedReader inBR=new BufferedReader(file);
-		String str=null;
-		//Declare a stack.
-		Deque<String> stack=new LinkedList<String>();
-		//Declares an array to hold the number of "cases" for each group of switches.
-		int [] csarray=new int[100];
-		int swnum=-1;
-		int countsw=0,countcs=0,countifelse=0,countifelseif=0,total=0;
-		//Declare a heap to hold all the keywords that need to be counted.
-		Set<String> key=new HashSet<String>();
-		key.add("auto");
-		key.add("break");
-		key.add("case");
-		key.add("char");
-		key.add("const");
-		key.add("continue");
-		key.add("default");
-		key.add("do ");
-		key.add("double");
-		key.add("else");
-		key.add("enum");
-		key.add("extern");
-		key.add("float");
-		key.add("for");
-		key.add("goto");
-		key.add("if");
-		key.add("int");
-		key.add("long");
-		key.add("register");
-		key.add("return");
-		key.add("short");
-		key.add("signed");
-		key.add("sizeof");
-		key.add("static");
-		key.add("struct");
-		key.add("switch");
-		key.add("typedef");
-		key.add("union");
-		key.add("unsigned");
-		key.add("void");
-		key.add("wolatile");
-		key.add("while");
+		String path=sc.next();	//Get the path to the file.
+		int level=sc.nextInt();//Get the required level.
+		String ans=yh(path,level);
+		System.out.print(ans);
+	}
+	public static String yh(String path,int level) throws FileNotFoundException {
+			Set<String> key=new HashSet<String>();	//Declare a heap to hold all the keywords that need to be counted.
+			key.add("auto");
+			key.add("break");
+			key.add("case");
+			key.add("char");
+			key.add("const");
+			key.add("continue");
+			key.add("default");
+			key.add("do ");
+			key.add("double");
+			key.add("else");
+			key.add("enum");
+			key.add("extern");
+			key.add("float");
+			key.add("for");
+			key.add("goto");
+			key.add("if");
+			key.add("int");
+			key.add("long");
+			key.add("register");
+			key.add("return");
+			key.add("short");
+			key.add("signed");
+			key.add("sizeof");
+			key.add("static");
+			key.add("struct");
+			key.add("switch");
+			key.add("typedef");
+			key.add("union");
+			key.add("unsigned");
+			key.add("void");
+			key.add("wolatile");
+			key.add("while"); 
+			int [] csarray=new int[100];	//Declares an array to hold the number of "cases" for each group of switches.
+			FileReader file=new FileReader(path); //read file.
+			BufferedReader inBR=new BufferedReader(file);
+			
+			Deque<String> stack=new LinkedList<String>();	//Declare a stack.
+			String str=null;
+			String ans="";
+			int countsw=0,countcs=0,countifelse=0,countifelseif=0,total=0,swnum=-1;
 		try {
 			while((str=inBR.readLine())!=null) {
+				
 			//level 1 Count the total number of keywords.
+				
 			for(String str2:key) {
 				if(str.contains(str2)) {
 					total++;
 				}
 		    }
+			
 			//level 2 Calculate the total number of "switch" and the corresponding number of "case".
+			
 			if(str.contains("switch")) {
 				countsw++;
 				swnum++;
@@ -67,7 +70,9 @@ public class lab2 {
 			if(str.contains("case")) {
 				csarray[swnum]++;
 			}
+			
 			//level 3 and 4 Count how many "if-else"and "if-else if-else" there are, and push any statement that contains an "if" onto the stack.
+			
 			if(str.contains("if")||str.contains("else if")) {
 				stack.push(str);
 			}
@@ -87,39 +92,41 @@ public class lab2 {
 				
 			}	
 			}
+			
 			//display each count by different level.
 			if(level==1) {
-				System.out.println("total num:"+total);
+				ans+="total num:"+total+"\n";
 			}if(level==2) {
-				System.out.println("total num:"+total);
-				System.out.println("switch num: "+countsw);
-				System.out.println("case num:");
+				ans+="total num:"+total+"\n";
+				ans+="switch num:"+countsw+"\n";
+				ans+="case num:";
 				for(int i=0;i<swnum+1;i++) {
-					System.out.print(csarray[i]+" ");
+					ans+=csarray[i]+" ";
 				}
 			}if(level==3) {
-				System.out.println("total num:"+total);
-				System.out.println("switch num: "+countsw);
-				System.out.print("case num:");
+				ans+="total num:"+total+"\n";
+				ans+="switch num:"+countsw+"\n";
+				ans+="case num:";
 				for(int i=0;i<swnum+1;i++) {
-					System.out.print(csarray[i]+" ");
+					ans+=csarray[i]+" ";
 				}
-				System.out.println();
-				System.out.println("if-else num:"+countifelse);
+				ans+="\n";
+				ans+="if-else num:"+countifelse+"\n";
 			}if(level==4) {
-				System.out.println("total num:"+total);
-				System.out.println("switch num: "+countsw);
-				System.out.print("case num:");
+				ans+="total num:"+total+"\n";
+				ans+="switch num:"+countsw+"\n";
+				ans+="case num:";
 				for(int i=0;i<swnum+1;i++) {
-					System.out.print(csarray[i]+" ");
+					ans+=csarray[i]+" ";
 				}
-				System.out.println();
-				System.out.println("if-else num:"+countifelse);
-				System.out.println("if-elseif-else num:"+countifelseif);
+				ans+="\n";
+				ans+="if-else num:"+countifelse+"\n";
+				ans+="if-elseif-else num:"+countifelseif+"\n";
 			}
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+           return ans;
 	}
 }

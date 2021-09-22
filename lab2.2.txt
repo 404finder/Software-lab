@@ -7,7 +7,8 @@ public class lab2 {
 		String path=sc.next();
 		//Get the required level.
 		int level=sc.nextInt();
-		FileReader file=new FileReader("C:\\Users\\lenovo\\Desktop\\text.txt");
+		//read file
+		FileReader file=new FileReader(path);
 		BufferedReader inBR=new BufferedReader(file);
 		String str=null;
 		//Declare a stack.
